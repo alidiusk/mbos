@@ -5,8 +5,8 @@
 .set MAGIC, 	0x1BADB002 	 /* 'magic number' lets bootloader find the header */
 .set CHECKSUM, 	-(MAGIC + FLAGS) /* checksum of above, to prove we are multiboot */
 
-/* 
-Declare multiboot header that markes program as a kernel. 
+/*
+Declare multiboot header that markes program as a kernel.
 See multiboot standard.
 */
 .section .multiboot
@@ -19,7 +19,7 @@ See multiboot standard.
 .section .bss
 .align 16
 stack_bottom:
-skip 16384 # 16 KiB
+.skip 16384 # 16 KiB
 stack_top:
 
 /* Linker script specifies `_start` as the entry point to the kernel. */
@@ -35,9 +35,9 @@ _start:
 	*/
 
 	/* Set up a stack by setting `esp` register. */
-	mov $stack_top, %esp
+	movl $stack_top, %esp
 
-	/* 
+	/*
 	Initialize crucial processor state here before entering high-level
 	kernel.
 
@@ -46,17 +46,17 @@ _start:
 
 	- The GDT should be loaded here.
 	- Paging should be enabled here.
-	- C++ features such as global constructors and exceptions will 
+	- C++ features such as global constructors and exceptions will
 	  require runtime support as well.
 	*/
 
 	/* Call the kernel main function to enter the high-level kernel. */
 	call kernel_main
 
-	/* 
+	/*
 	If the system has nothing more to do, put computer into infinite loop.
 	1. Disable interrupts with `cli`
-	2. Wait for the next interrupt to arrive with `hlt`; this will lock 
+	2. Wait for the next interrupt to arrive with `hlt`; this will lock
 	   the computer.
 	3. Jump to `hlt` instruction if it ever wakes up due to a non-maskable
 	   interrupt occurring or due to system management mode.
@@ -65,7 +65,7 @@ _start:
 1:	hlt
 	jmp 1b
 
-/* 
+/*
 Set the size of the `_start` symbol to the current location `.` minus its start.
 This is useful when debugging or when we implement call tracing
 */
