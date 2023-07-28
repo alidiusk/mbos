@@ -41,7 +41,7 @@ all: $(BINARY)
 
 $(BINARY): $(OBJS) $(ARCHDIR)/linker.ld
 	$(CC) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
-	# grub-file --is-x86-multiboot $(BINARY)
+	grub-file --is-x86-multiboot $(BINARY)
 
 .c.o:
 	$(CC) -MD -c $< -o $@ -std=c11 $(CFLAGS)
